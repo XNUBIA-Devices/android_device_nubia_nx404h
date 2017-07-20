@@ -15,9 +15,9 @@
 # limitations under the License.
 
 # inherit from the proprietary version
--include vendor/nubia/nx505j/BoardConfigVendor.mk
+-include vendor/NUBIA/NX404H/BoardConfigVendor.mk
 
-LOCAL_PATH := device/nubia/nx505j
+LOCAL_PATH := device/NUBIA/NX404H
 
 PRODUCT_COPY_FILES := $(filter-out frameworks/base/data/keyboards/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
 	frameworks/base/data/keyboards/Generic.kl:system/usr/keylayout/Generic.kl \
@@ -70,7 +70,7 @@ BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
 TARGET_KERNEL_CROSS_COMPILE_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/arm-cortex_a15-linux-gnueabihf-linaro_4.9/bin/arm-cortex_a15-linux-gnueabihf-
-TARGET_KERNEL_SOURCE := kernel/nubia/nx505j
+TARGET_KERNEL_SOURCE := kernel/NUBIA/NX404H
 TARGET_KERNEL_ARCH := arm
 TARGET_KERNEL_CONFIG := lineage_nx505j_nomodules_defconfig
 TARGET_ZTEMT_DTS := true
@@ -136,7 +136,7 @@ EXTENDED_FONT_FOOTPRINT := true
 BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
 
 # Camera
-TARGET_SPECIFIC_HEADER_PATH := device/nubia/nx505j/include
+TARGET_SPECIFIC_HEADER_PATH := device/NUBIA/NX404H/include
 USE_DEVICE_SPECIFIC_CAMERA := true
 BOARD_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT
 TARGET_HAS_LEGACY_CAMERA_HAL1 := true
@@ -154,7 +154,7 @@ TARGET_TAP_TO_WAKE_NODE := "/data/tp/easy_wakeup_gesture"
 BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS += \
     hardware/cyanogen/cmhw \
-    device/nubia/nx505j/cmhw
+    device/NUBIA/NX404H/cmhw
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
@@ -237,5 +237,5 @@ endif
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += device/nubia/nx505j/sepolicy
+BOARD_SEPOLICY_DIRS += device/NUBIA/NX404H/sepolicy
 
