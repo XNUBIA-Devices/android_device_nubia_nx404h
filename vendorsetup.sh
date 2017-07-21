@@ -1,3 +1,3 @@
-add_lunch_combo lineage_NX404H-userdebug
-add_lunch_combo lineage_NX404H-eng
+add_lunch_combo nx_NX404H-userdebug
+add_lunch_combo nx_NX404H-eng
 
