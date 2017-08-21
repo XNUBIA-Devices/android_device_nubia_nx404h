@@ -15,9 +15,9 @@
 # limitations under the License.
 
 # inherit from the proprietary version
--include vendor/nubia/nx505j/BoardConfigVendor.mk
+-include vendor/NUBIA/MSM8226/BoardConfigVendor.mk
 
-LOCAL_PATH := device/nubia/nx505j
+LOCAL_PATH := device/NUBIA/X9180
 
 PRODUCT_COPY_FILES := $(filter-out frameworks/base/data/keyboards/AVRCP.kl:system/usr/keylayout/AVRCP.kl \
 	frameworks/base/data/keyboards/Generic.kl:system/usr/keylayout/Generic.kl \
@@ -25,33 +25,31 @@ PRODUCT_COPY_FILES := $(filter-out frameworks/base/data/keyboards/AVRCP.kl:syste
 
 # RIL
 TARGET_RIL_VARIANT := caf
-COMMON_GLOBAL_CFLAGS += -DNO_SECURE_DISCARD
-COMMON_GLOBAL_CPPFLAGS += -DNO_SECURE_DISCARD
-PROTOBUF_SUPPORTED := true
 
 # Assert
-TARGET_OTA_ASSERT_DEVICE := NX505J,nx505j,cm_NX505J,cm_nx505j,NX505j,jNX505
+TARGET_OTA_ASSERT_DEVICE := X9180,N9180,U9180,x9180,n9180,u9180
+
+BLOCK_BASED_OTA := false
 
 # Partitions
 BOARD_BOOTIMAGE_PARTITION_SIZE := 16777216
-BOARD_CACHEIMAGE_PARTITION_SIZE := 524288000
+BOARD_CACHEIMAGE_PARTITION_SIZE := 268435456
 BOARD_RECOVERYIMAGE_PARTITION_SIZE := 25165824
 BOARD_SYSTEMIMAGE_PARTITION_SIZE := 1610612736
-BOARD_USERDATAIMAGE_PARTITION_SIZE := 28248620544
+BOARD_USERDATAIMAGE_PARTITION_SIZE := 12738083840
 
 # Recovery
 TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/recovery/recovery.fstab
 BOARD_VENDOR := zte-qcom
 
 # Bootloader
-TARGET_BOOTLOADER_BOARD_NAME := MSM8974
+TARGET_BOOTLOADER_BOARD_NAME := MSM8226
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
 
 # Platform
-TARGET_BOARD_PLATFORM := msm8974
-TARGET_BOARD_PLATFORM_GPU := qcom-adreno330
-USE_CLANG_PLATFORM_BUILD := true
+TARGET_BOARD_PLATFORM := msm8226
+TARGET_BOARD_PLATFORM_GPU := qcom-adreno305
 
 # Architecture
 TARGET_ARCH := arm
@@ -70,17 +68,17 @@ TARGET_KRAIT_BIONIC_BBTHRESH := 64
 TARGET_KRAIT_BIONIC_PLDSIZE := 64
 
 # Kernel
-KERNEL_TOOLCHAIN_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/arm-cortex_a15-linux-gnueabihf-linaro_4.9/bin/arm-cortex_a15-linux-gnueabihf-
-BOARD_DTBTOOL_ARGS := --force-v2
 BOARD_KERNEL_CMDLINE := console=null androidboot.hardware=qcom user_debug=23 msm_rtb.filter=0x37 ehci-hcd.park=3 androidboot.bootdevice=msm_sdcc.1 androidboot.selinux=permissive
 BOARD_KERNEL_SEPARATED_DT := true
 BOARD_KERNEL_BASE := 0x00000000
 BOARD_KERNEL_PAGESIZE := 2048
+#TARGET_KERNEL_CROSS_COMPILE_PREFIX := arm-linux-androideabi-
 BOARD_MKBOOTIMG_ARGS := --ramdisk_offset 0x02000000 --tags_offset 0x01E00000
-TARGET_KERNEL_SOURCE := kernel/nubia/nx505j
+KERNEL_TOOLCHAIN_PREFIX := $(ANDROID_BUILD_TOP)/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
+TARGET_KERNEL_SOURCE := kernel/NUBIA/X9180
 TARGET_KERNEL_ARCH := arm
-TARGET_KERNEL_CONFIG := lineage_nx505j_defconfig
-TARGET_ZTEMT_DTS := true
+BOARD_CUSTOM_BOOTIMG_MK := $(LOCAL_PATH)/mkbootimg.mk
+TARGET_KERNEL_CONFIG := msm8926-ne501j_defconfig
 
 # Power
 TARGET_POWERHAL_VARIANT := qcom
@@ -144,10 +142,10 @@ BOARD_ANT_WIRELESS_DEVICE := "vfs-prerelease"
 
 # Camera
 USE_DEVICE_SPECIFIC_CAMERA := true
-COMMON_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT
+BOARD_GLOBAL_CFLAGS += -DCAMERA_VENDOR_L_COMPAT
 
 # Boot animation
-TARGET_BOOTANIMATION_MULTITHREAD_DECODE := true
+#TARGET_BOOTANIMATION_MULTITHREAD_DECODE := true
 
 # RPC
 TARGET_NO_RPC := true
@@ -157,13 +155,10 @@ TARGET_TAP_TO_WAKE_NODE := "/data/tp/easy_wakeup_gesture"
 BOARD_USES_CYANOGEN_HARDWARE := true
 BOARD_HARDWARE_CLASS += \
     hardware/cyanogen/cmhw \
-    device/nubia/nx505j/cmhw
+    device/NUBIA/X9180/cmhw
 
 # Encryption
 TARGET_HW_DISK_ENCRYPTION := true
-
-# Init
-TARGET_INIT_UMOUNT_AND_FSCK_IS_UNSAFE := true
 
 # Lights
 TARGET_PROVIDES_LIBLIGHT := true
@@ -192,8 +187,6 @@ BOARD_HOSTAPD_DRIVER := NL80211
 BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_qcwcn
 BOARD_WPA_SUPPLICANT_DRIVER := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_qcwcn
-WIFI_DRIVER_MODULE_PATH := "/system/lib/modules/wlan.ko"
-WIFI_DRIVER_MODULE_NAME := "wlan"
 WIFI_DRIVER_FW_PATH_STA := "sta"
 WIFI_DRIVER_FW_PATH_AP := "ap"
 TARGET_USES_WCNSS_CTRL := true
@@ -207,13 +200,38 @@ BOARD_RECOVERY_SWIPE := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBX_8888"
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
+BOARD_HAS_LARGE_FILESYSTEM := true
+BOARD_RECOVERY_SWIPE := true
+TARGET_RECOVERY_FSTAB := $(LOCAL_PATH)/rootdir/etc/fstab.qcom
+TARGET_RECOVERY_QCOM_RTC_FIX := true
+
+# TWRP recovery
+ifeq ($(WITH_TWRP),true)
+RECOVERY_VARIANT := twrp
+RECOVERY_SDCARD_ON_DATA := true
+BOARD_SUPPRESS_SECURE_ERASE := true
+TW_USE_TOOLBOX := true
+TW_TARGET_USES_QCOM_BSP := true
+TW_THEME := portrait_hdpi
+TW_INCLUDE_CRYPTO := true
+TW_IGNORE_MISC_WIPE_DATA := true
+TARGET_CRYPTFS_HW_PATH := vendor/qcom/opensource/cryptfs_hw
+TW_INCLUDE_NTFS_3G := true
+TW_NO_SCREEN_BLANK := true
+TW_DEVICE_VERSION := 1
+
+TW_BRIGHTNESS_PATH := /sys/class/leds/lcd-backlight/brightness
+PRODUCT_COPY_FILES += \
+	bionic/libc/zoneinfo/tzdata:recovery/root/system/usr/share/zoneinfo/tzdata \
+	$(LOCAL_PATH)/recovery/twrp.fstab:recovery/root/etc/twrp.fstab
+endif
 
 # dex-preoptimization to speed up first boot sequence
-WITH_DEXPREOPT := false
+#WITH_DEXPREOPT := false
 
-SKIP_BOOT_JARS_CHECK := true
+#SKIP_BOOT_JARS_CHECK := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
-BOARD_SEPOLICY_DIRS += device/nubia/nx505j/sepolicy
+BOARD_SEPOLICY_DIRS += device/NUBIA/X9180/sepolicy
 
